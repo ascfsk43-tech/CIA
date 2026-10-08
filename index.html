@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIA - الدليل الشامل وقطاعات الوكالة</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #111827;
+            --accent-color: #3b82f6;
+            --text-color: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border-color: #1f2937;
+            --table-bg: #1f2937;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+        }
+
+        /* شريط التنقل العلوي */
+        nav {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            background-color: rgba(17, 24, 39, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 12px 20px;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            color: #60a5fa;
+            background: rgba(59, 130, 246, 0.1);
+            transform: translateY(-3px);
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3a8a, var(--card-bg));
+            padding: 130px 20px 60px 20px;
+            text-align: center;
+            border-bottom: 4px solid var(--accent-color);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* تنسيق شعار الموقع في الأعلى */
+        .site-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent-color);
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.6);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .site-logo:hover {
+            transform: scale(1.05);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 3rem;
+            color: #60a5fa;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(96, 165, 250, 0.5);
+        }
+
+        header p {
+            color: var(--text-muted);
+            margin-top: 15px;
+            font-size: 1.2rem;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #60a5fa;
+            margin-bottom: 20px;
+            margin-top: 50px;
+            border-right: 5px solid var(--accent-color);
+            padding-right: 15px;
+            background: rgba(59, 130, 246, 0.1);
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border-radius: 6px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        ol, ul {
+            margin: 0;
+            padding-right: 20px;
+        }
+
+        li {
+            margin-bottom: 14px;
+            font-size: 1.05rem;
+            padding-right: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        li::marker {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        /* لوحة التحكم الإدارية */
+        #admin-panel {
+            display: none;
+            background: #1f2937;
+            border: 2px solid #3b82f6;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+        }
+
+        .admin-action-btn {
+            background: #3b82f6;
+            color: #fff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 5px;
+            transition: 0.3s;
+        }
+        .admin-action-btn:hover { opacity: 0.85; transform: translateY(-2px); }
+
+        .rule-buttons-group {
+            display: none;
+            gap: 5px;
+        }
+
+        .rule-btn {
+            background: #374155;
+            color: #fff;
+            border: none;
+            padding: 3px 8px;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .rule-btn.edit:hover { background: #3b82f6; }
+        .rule-btn.delete:hover { background: #ef4444; }
+
+        /* شاشة الصيانة */
+        #maintenance-screen {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #0b0f19;
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        #floating-alert {
+            display: none;
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #3b82f6;
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: bold;
+            box-shadow: 0 5px 20px rgba(59, 130, 246, 0.5);
+            z-index: 9999;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            background-color: var(--card-bg);
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            margin-top: 60px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- شاشة الصيانة -->
+    <div id="maintenance-screen">
+        <h1 style="color: #ef4444; font-size: 2.5rem; margin-bottom: 10px;">الموقع مغلق حالياً للصيانة</h1>
+        <p style="color: var(--text-muted); font-size: 1.1rem;">نعتذر منك، عُد لاحقاً أو سجل دخولك الإداري.</p>
+        <button onclick="promptLogin()" style="margin-top: 20px; background: #3b82f6; color: #fff; border: none; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-weight: bold;">تسجيل دخول الإدارة</button>
+    </div>
+
+    <div id="floating-alert">تم التعديل بنجاح!</div>
+
+    <!-- شريط التنقل العلوي -->
+    <nav id="top-nav">
+        <a href="#fsa" id="nav-fsa">FSA</a>
+        <a href="#uob" id="nav-uob">UOB</a>
+        <a href="#cid" id="nav-cid">CID</a>
+        <a href="#tas" id="nav-tas">TAS</a>
+        <a href="#oig" id="nav-oig">OIG</a>
+        <a href="#do-sec" id="nav-do-sec">DO</a>
+        <a id="nav-login-btn" onclick="handleNavClick()" style="color: #60a5fa;">⚙️ تسجيل دخول الإدارة</a>
+    </nav>
+
+    <header>
+        <!-- شعار الوكالة المضاف في أعلى الموقع -->
+        <img src="C17B344D-2419-43AC-9DF6-F17BF90134E4.png" alt="شعار CIA" class="site-logo">
+        <h1>CIA</h1>
+        <p>الدليل الرسمي الشامل لقطاعات وأنظمة الوكالة الفيدرالية الأمنية</p>
+    </header>
+
+    <div class="container">
+        
+        <!-- لوحة التحكم الإدارية -->
+        <div id="admin-panel">
+            <h3 style="color: #60a5fa; margin-top: 0; display: flex; justify-content: space-between; align-items: center;">
+                <span>لوحة التحكم الإدارية</span>
+                <span id="role-badge" style="font-size: 0.9rem; background: #3b82f6; padding: 4px 12px; border-radius: 20px; color: #fff;">رتبتك: زائر</span>
+            </h3>
+            <p>حالة الموقع: <span id="status-text" style="font-weight: bold; color: #22c55e;">مفتوح</span></p>
+            
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px;">
+                <button id="owner-add-section-btn" class="admin-action-btn" onclick="addNewSectionPrompt()" style="background: #10b981; display: none;">➕ إضافة قسم جديد (أونر)</button>
+                <button id="owner-site-close" class="admin-action-btn" onclick="toggleSiteStatus('close')" style="background: #ef4444; display: none;">إغلاق الموقع صيانة</button>
+                <button id="owner-site-open" class="admin-action-btn" onclick="toggleSiteStatus('open')" style="background: #22c55e; display: none;">فتح الموقع</button>
+                <button id="owner-warn-btn" class="admin-action-btn" onclick="toggleSection('warn-section')" style="background: #f59e0b; display: none;">⚠️ تحذيرات الأعضاء</button>
+                <button id="owner-partner-btn" class="admin-action-btn" onclick="toggleSection('partnership-section')" style="background: #8b5cf6; display: none;">🤝 إدارة الشراكة</button>
+                <button id="owner-fire-btn" class="admin-action-btn" onclick="fireAdmin()" style="background: #dc2626; display: none;">⛔ فصل وطرد الأدمن</button>
+                <button class="admin-action-btn" onclick="adminLogout()" style="background: #64748b;">تسجيل خروج</button>
+            </div>
+        </div>
+
+        <!-- قسم إدارة الشراكة (للأونر فقط) -->
+        <div id="partnership-section" class="card" style="display: none; border-color: #8b5cf6;">
+            <h3 style="color: #a78bfa; margin-top: 0;">🤝 قسم إدارة الشراكات</h3>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
+                <input type="text" id="partner-name" placeholder="اسم السيرفر" style="flex: 1; padding: 10px; background: #0b0f19; border: 1px solid var(--border-color); color: #fff; border-radius: 6px;">
+                <input type="text" id="partner-owner" placeholder="المسؤول" style="flex: 1; padding: 10px; background: #0b0f19; border: 1px solid var(--border-color); color: #fff; border-radius: 6px;">
+                <input type="text" id="partner-link" placeholder="رابط الديسكورد" style="flex: 1; padding: 10px; background: #0b0f19; border: 1px solid var(--border-color); color: #fff; border-radius: 6px;">
+                <button onclick="addPartner()" style="background: #8b5cf6; color: #fff; border: none; padding: 10px 20px; font-weight: bold; border-radius: 6px; cursor: pointer;">إضافة</button>
+            </div>
+            <table>
+                <thead><tr><th>السيرفر</th><th>الأونر</th><th>الرابط</th><th>حذف</th></tr></thead>
+                <tbody id="partners-table-body"><tr><td colspan="4" style="text-align: center; color: var(--text-muted);">لا توجد شراكات.</td></tr></tbody>
+            </table>
+        </div>
+
+        <!-- قسم السجلات (Logs) - للأونر فقط -->
+        <div id="logs-section" class="card" style="display: none; border-color: #3b82f6;">
+            <h3 style="color: #60a5fa; margin-top: 0; display: flex; justify-content: space-between; align-items: center;">
+                <span>📊 سجل نشاطات النظام واللوق (صلاحية الأونر فقط)</span>
+                <button onclick="clearLogs()" style="background: #ef4444; color: #fff; border: none; padding: 5px 12px; font-size: 0.85rem; border-radius: 6px; cursor: pointer;">مسح السجلات</button>
+            </h3>
+            <div style="max-height: 250px; overflow-y: auto; background: #0b0f19; border: 1px solid var(--border-color); border-radius: 8px; padding: 10px;">
+                <ul id="logs-list" style="padding-right: 15px; margin: 0; color: #d1d5db; font-size: 0.95rem;">
+                    <li>لا توجد سجلات مسجلة.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- نظام التحذيرات (للأونر فقط) -->
+        <div id="warn-section" class="card" style="display: none; border-color: #f59e0b;">
+            <h3 style="color: #f59e0b; margin-top: 0;">⚠ نظام تحذيرات الأعضاء</h3>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+                <input type="text" id="warn-player" placeholder="اسم العضو" style="flex: 1; padding: 10px; background: #0b0f19; border: 1px solid var(--border-color); color: #fff; border-radius: 6px;">
+                <input type="text" id="warn-reason" placeholder="السبب" style="flex: 2; padding: 10px; background: #0b0f19; border: 1px solid var(--border-color); color: #fff; border-radius: 6px;">
+                <button onclick="addWarning()" style="background: #f59e0b; color: #0b0f19; border: none; padding: 10px 20px; font-weight: bold; border-radius: 6px; cursor: pointer;">إرسال</button>
+            </div>
+            <ul id="warnings-list" style="padding-right: 20px; color: var(--text-muted);">
+                <li>لا توجد تحذيرات.</li>
+            </ul>
+        </div>
+
+        <!-- 1. FSA -->
+        <div id="fsa" class="section-title" onclick="if(localStorage.getItem('user_role')) editSectionTitle('fsa', 'nav-fsa')" style="cursor: pointer;" title="اضغط لتعديل اسم القسم">
+            <span id="title-fsa">1. FSA - FEDERAL SECURITY AGENCY</span>
+            <button class="admin-action-btn" style="padding: 4px 10px; font-size: 0.8rem; margin:0; display:none;" id="btn-add-fsa" onclick="event.stopPropagation(); addNewRule('fsa-list')">➕ إضافة بند</button>
+        </div>
+        <div class="card">
+            <ol id="fsa-list">
+                <li><span>التعريف: الوكالة الفيدرالية الأمنية المشتركة.[cite: 1]</span> <span class="rule-buttons-group"><button class="rule-btn edit" onclick="editRule(this)">تعديل</button><button class="rule-btn delete" onclick="deleteRule(this)">حذف</button></span></li>
+                <li><span>الوصف: القيادة العليا والمظلة الرئيسية التي تجمع كافة القطاعات الأمنية، التحقيقات، فرق المداهمة، والعمليات السرية تحت إدارة واحدة لتنسيق العمل الميداني وحماية السيرفر من الجرائم والتهديدات الخطيرة.[cite: 1]</span> <span class="rule-buttons-group"><button class="rule-btn edit" onclick="editRule(this)">تعديل</button><button class="rule-btn delete" onclick="deleteRule(this)">حذف</button></span></li>
+            </ol>
+        </div>
+
+        <!-- 2. UOB -->
+        <div id="uob" class="section-title" onclick="if(localStorage.getItem('user_role')) editSectionTitle('uob', 'nav-uob')" style="cursor: pointer;" title="اضغط لتعديل اسم القسم">
+            <span id="title-uob">2. Undercover Operations Bureau - UOB</span>
+            <button class="admin-action-btn" style="padding: 4px 10px; font-size: 0.8rem; margin:0; display:none;" id="btn-add-uob" onclick="event.stopPropagation(); addNewRule('uob-list')">➕ إضافة بند</button>
+        </div>
+        <div class="card">
+            <ol id="uob-list">
+                <li><span>التعريف: مكتب العمليات السرية (أندر كفر).[cite: 1]</span> <span class="rule-buttons-group"><button class="rule-btn edit" onclick="editRule(this)">تعديل</button><button class="rule-btn delete" onclick="deleteRule(this)">حذف</button></span></li>
+                <li><span>الوصف: القطاع المسؤول عن جمع المعلومات والتجسس من قلب الحدث. يعمل عملاؤه بملابس مدنية وهويات وهمية كاملة لاختراق العصابات، ورصد تحركات المجرمين، ونقل الإحداثيات دون أن ينكشف أمرهم.[cite: 1]</span> <span class="rule-buttons-group"><button class="rule-btn edit" onclick="editRule(this)">تعديل</button><button class="rule-btn delete" onclick="deleteRule(this)">حذف</button></span></li>
+            </ol>
+        </div>
+
+        <!-- 3. CID -->
+        <div id="cid" class="section-title" onclick="if(localStorage.getItem('user_role')) editSectionTitle('cid', 'nav-cid')" style="cursor: pointer;" title="اضغط لتعديل اسم القسم">
+            <span id="title-cid">3. Criminal Investigation Division - CID</span>
+            <button class="admin-action-btn" style="padding: 4px 10px; font-size: 0.8rem; margin:0; display:none;" id="btn-add-cid" onclick="event.stopPropagation(); addNewRule('cid-list')">➕ إضافة بند</button>
+        </div>
+        <div class="card">
+            <ol id="cid-list">
+                <li><span>التعريف: دائرة التحقيقات الجنائية (المباحث).[cite: 1]</span> <span class="rule-buttons-group"><button class="rule-btn edit" onclick="editRule(this)">تعديل</button><button class="rule-btn delete" onclick="deleteRule(this)">حذف</button></span></li>
+                <li><span>الوصف: القطاع المختص بفتح ملفات القضايا، وجمع الأدلة والبراهين، وتتبع الجرائم المنظمة، واستجواب المشتبه بهم بهدف إعداد ملف تحقيق كامل وإصدار أوامر القبض الشرعية.[cite: 1]</span> <span class="rule-buttons-group"><button class="rule-btn edit" onclick="editRule(this)">تعديل</button><button class="rule-btn delete" onclick="deleteRule(this)">حذف</button></span></li>
+            </ol>
+        </div>
+
+        <!-- 4. TAS -->
+        <div id="tas" class="section-title" onclick="if(localStorage.getItem('user_role')) editSectionTitle('tas', 'nav-tas')" style="cursor: pointer;" title="اضغط لتعديل اسم القسم">
+            <span id="title-tas">4. Tactical Assault & SWAT - TAS</span>
+            <button class="admin-action-btn" style="padding: 4px 10px; font-size: 0.8rem; margin:0; display:none;" id="btn-add-tas" onclick="event.stopPropagation(); addNewRule('tas-list')">➕ إضافة بند</button>
+        </div>
+        <div class="card">
+            <ol id="tas-list">
+                <li><span>التعريف: قطاع الدعم الاقتحامي والعمليات التكتيكية.[cite: 1]</span> <span class="rule-buttons-group"><button class="rule-btn edit" onclick="editRule(this)">تعديل</button><button class="rule-btn delete" onclick="deleteRule(this)">حذف</button></span></li>
+                <li><span>الوصف: القوة الضاربة والمدججة بالسلاح في الوكالة. يتولى هذا القسم تنفيذ المداهمات الميدانية الكبرى واقتحام أوكار المجرمين وتأمين الرهائن فور صدور إذن المداهمة من الإدارة العليا.[cite: 1]</span> <span class="rule-buttons-group"><button class="rule-btn edit" onclick="editRule(this)">تعديل</button><button class="rule-btn delete" onclick="deleteRule(this)">حذف</button></span></li>
+            </ol>
+        </div>
+
+        <!-- 5. OIG -->
+        <div id="oig" class="section-title" onclick="if(localStorage.getItem('user_role')) editSectionTitle('oig', 'nav-oig')" style="cursor: pointer;" title="اضغط لتعديل اسم القسم">
+            <span id="title-oig">5. Office of Inspector General - OIG</span>
+            <button class="admin-action-btn" style="padding: 4px 10px; font-size: 0.8rem; margin:0; display:none;" id="btn-add-oig" onclick="event.stopPropagation(); addNewRule('oig-list')">➕ إضافة بند</button>
+        </div>
+        <div class="card">
+            <ol id="oig-list">
+                <li><span>التعريف: مكتب المفتش العام (الرقابة الداخلية).[cite: 1]</span> <span class="rule-buttons-group"><button class="rule-btn edit" onclick="editRule(this)">تعديل</button><button class="rule-btn delete" onclick="deleteRule(this)">حذف</button></span></li>
+                <li><span>الوصف: جهاز رقابي مستقل وداخلي، مهمته التدقيق وراء العملاء الفيدراليين، والتحقيق في قضايا الفساد، واستغلال السلطة، وتسريب المعلومات السرية لضمان نزاهة العمل داخل المنظومة.[cite: 1]</span> <span class="rule-buttons-group"><button class="rule-btn edit" onclick="editRule(this)">تعديل</button><button class="rule-btn delete" onclick="deleteRule(this)">حذف</button></span></li>
+            </ol>
+        </div>
+
+        <!-- 6. DO -->
+        <div id="do-sec" class="section-title" onclick="if(localStorage.getItem('user_role')) editSectionTitle('do-sec', 'nav-do-sec')" style="cursor: pointer;" title="اضغط لتعديل اسم القسم">
+            <span id="title-do-sec">6. DO - Directorate of Operations</span>
+            <button class="admin-action-btn" style="padding: 4px 10px; font-size: 0.8rem; margin:0; display:none;" id="btn-add-do-sec" onclick="event.stopPropagation(); addNewRule('do-sec-list')">➕ إضافة بند</button>
+        </div>
+        <div class="card">
+            <ol id="do-sec-list">
+                <li><span>التعريف: مديرية العمليات السيادية.[cite: 1]</span> <span class="rule-buttons-group"><button class="rule-btn edit" onclick="editRule(this)">تعديل</button><button class="rule-btn delete" onclick="deleteRule(this)">حذف</button></span></li>
+                <li><span>الوصف: هذا القسم يُعنى بالتوجيه الاستراتيجي عالي المستوى وتأمين رومات القيادة والاتصالات المشفرة (مثل الرومات الظاهرة بأيقونات القفل والميكروفون)، ويشرف مباشرة على إدارة وتوجيه المداهمات الكبرى والتكليفات السرية للعملاء في الميدان.[cite: 1]</span> <span class="rule-buttons-group"><button class="rule-btn edit" onclick="editRule(this)">تعديل</button><button class="rule-btn delete" onclick="deleteRule(this)">حذف</button></span></li>
+            </ol>
+        </div>
+
+        <!-- الأقسام المضافة ديناميكياً بواسطة الأونر -->
+        <div id="dynamic-sections-container"></div>
+
+    </div>
+
+    <footer>
+        <p>جميع الحقوق محفوظة &copy; 2026 - CIA Roleplay</p>
+    </footer>
+
+    <script>
+        const ownerPass = "albalushii71711950";
+        const adminPass = "albalushii99551179";
+
+        window.onload = function() {
+            const siteStatus = localStorage.getItem("site_status");
+            const userRole = localStorage.getItem("user_role");
+            
+            if (siteStatus === "closed" && userRole !== "owner" && userRole !== "admin") {
+                document.getElementById("maintenance-screen").style.display = "flex";
+            } else {
+                document.getElementById("maintenance-screen").style.display = "none";
+            }
+            loadCustomTitles();
+            loadDynamicSections();
+            applyPermissions();
+            loadWarnings();
+            loadPartners();
+            loadLogs();
+        }
+
+        function handleNavClick() {
+            let userRole = localStorage.getItem("user_role");
+            if (userRole) {
+                let panel = document.getElementById("admin-panel");
+                panel.style.display = panel.style.display === "block" ? "none" : "block";
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                promptLogin();
+            }
+        }
+
+        function promptLogin() {
+            let pass = prompt("أدخل كلمة المرور الإدارية (أونر / أدمن):");
+            if (pass === ownerPass) {
+                localStorage.setItem("user_role", "owner");
+                logAction("تسجيل دخول ناجح بصلاحية [أونر]", "أونر");
+                alert("مرحباً بك يا أونر!");
+                location.reload();
+            } else if (pass === adminPass) {
+                localStorage.setItem("user_role", "admin");
+                logAction("تسجيل دخول ناجح بصلاحية [أدمن]", "أدمن");
+                alert("مرحباً بك يا أدمن!");
+                location.reload();
+            } else if (pass !== null) {
+                alert("كلمة المرور غير صحيحة!");
+            }
+        }
+
+        function applyPermissions() {
+            let role = localStorage.getItem("user_role");
+            if (role) {
+                document.getElementById("maintenance-screen").style.display = "none";
+                document.getElementById("admin-panel").style.display = "block";
+                
+                let badge = document.getElementById("role-badge");
+                let navBtn = document.getElementById("nav-login-btn");
+
+                if (role === "owner") {
+                    badge.innerText = "رتبتك: 👑 أونر (التحكم الكامل)";
+                    badge.style.background = "#f59e0b";
+                    navBtn.innerText = "👑 لوحة الأونر";
+                    document.getElementById("owner-add-section-btn").style.display = "inline-block";
+                    document.getElementById("owner-site-close").style.display = "inline-block";
+                    document.getElementById("owner-site-open").style.display = "inline-block";
+                    document.getElementById("owner-warn-btn").style.display = "inline-block";
+                    document.getElementById("owner-partner-btn").style.display = "inline-block";
+                    document.getElementById("owner-fire-btn").style.display = "inline-block";
+                    document.getElementById("logs-section").style.display = "block";
+                } else if (role === "admin") {
+                    badge.innerText = "رتبتك: 🛡️ أدمن (تعديل الأقسام والبنود)";
+                    badge.style.background = "#3b82f6";
+                    navBtn.innerText = "🛡️ لوحة الأدمن";
+                }
+
+                document.querySelectorAll('.rule-buttons-group').forEach(el => el.style.display = 'inline-flex');
+                
+                ['fsa', 'uob', 'cid', 'tas', 'oig', 'do-sec'].forEach(key => {
+                    let btn = document.getElementById("btn-add-" + key);
+                    if(btn) btn.style.display = 'inline-block';
+                });
+                
+                document.querySelectorAll('.dynamic-add-rule-btn').forEach(el => el.style.display = 'inline-block');
+                document.querySelectorAll('.delete-section-btn').forEach(el => {
+                    if(role === 'owner') el.style.display = 'inline-block';
+                });
+            }
+        }
+
+        function adminLogout() {
+            logAction("تم تسجيل الخروج من لوحة التحكم", localStorage.getItem("user_role") === "owner" ? "أونر" : "أدمن");
+            localStorage.removeItem("user_role");
+            alert("تم تسجيل الخروج!");
+            location.reload();
+        }
+
+        function fireAdmin() {
+            if (confirm("هل أنت متأكد من فصل وطرد الأدمن من لوحة التحكم؟")) {
+                localStorage.removeItem("user_role");
+                logAction("قام الأونر بفصل وطرد الأدمن من النظام", "أونر");
+                alert("تم فصل الأدمن بنجاح!");
+                location.reload();
+            }
+        }
+
+        function toggleSiteStatus(action) {
+            if (action === 'close') {
+                localStorage.setItem("site_status", "closed");
+                logAction("قام الأونر بإغلاق الموقع للصيانة", "أونر");
+                alert("تم إغلاق الموقع!");
+                location.reload();
+            } else {
+                localStorage.setItem("site_status", "open");
+                logAction("قام الأونر بفتح الموقع للعامة", "أونر");
+                alert("تم فتح الموقع!");
+                location.reload();
+            }
+        }
+
+        function toggleSection(sectionId) {
+            let box = document.getElementById(sectionId);
+            box.style.display = box.style.display === "block" ? "none" : "block";
+        }
+
+        function showFloatingAlert(text) {
+            let alertBox = document.getElementById("floating-alert");
+            alertBox.innerText = text;
+            alertBox.style.display = "block";
+            setTimeout(() => { alertBox.style.display = "none"; }, 2500);
+        }
+
+        function editSectionTitle(secKey, navId) {
+            let titleSpan = document.getElementById("title-" + secKey);
+            let navLink = document.getElementById(navId);
+            let currentTitle = titleSpan ? titleSpan.innerText : "";
+            
+            let newTitle = prompt("أدخل اسم القسم الجديد (سيتغير في الشريط العلوي أيضاً):", currentTitle);
+            if (newTitle !== null && newTitle.trim() !== "") {
+                if(titleSpan) titleSpan.innerText = newTitle;
+                if(navLink) navLink.innerText = newTitle;
+                
+                let customTitles = JSON.parse(localStorage.getItem("site_custom_titles") || "{}");
+                customTitles[secKey] = newTitle;
+                localStorage.setItem("site_custom_titles", JSON.stringify(customTitles));
+
+                let roleName = localStorage.getItem("user_role") === "owner" ? "أونر" : "أدمن";
+                logAction(`قام (${roleName}) بتعديل اسم القسم إلى: [${newTitle}]`, roleName);
+                showFloatingAlert("تم تغيير الاسم بنجاح!");
+            }
+        }
+
+        function loadCustomTitles() {
+            let customTitles = JSON.parse(localStorage.getItem("site_custom_titles") || "{}");
+            for (let key in customTitles) {
+                let titleSpan = document.getElementById("title-" + key);
+                let navLink = document.getElementById("nav-" + key);
+                if(titleSpan) titleSpan.innerText = customTitles[key];
+                if(navLink) navLink.innerText = customTitles[key];
+            }
+        }
+
+        function editRule(btn) {
+            let li = btn.closest("li");
+            let span = li.querySelector("span");
+            let currentText = span.innerText;
+            let updatedText = prompt("عدل النص:", currentText);
+            if (updatedText !== null && updatedText.trim() !== "") {
+                span.innerText = updatedText;
+                let roleName = localStorage.getItem("user_role") === "owner" ? "أونر" : "أدمن";
+                logAction(`قام (${roleName}) بتعديل بند`, roleName);
+                showFloatingAlert("تم التعديل بنجاح!");
+            }
+        }
+
+        function deleteRule(btn) {
+            if (confirm("هل أنت متأكد من حذف هذا البند؟")) {
+                let li = btn.closest("li");
+                li.remove();
+                let roleName = localStorage.getItem("user_role") === "owner" ? "أونر" : "أدمن";
+                logAction(`قام (${roleName}) بحذف بند`, roleName);
+                showFloatingAlert("تم الحذف بنجاح!");
+            }
+        }
+
+        function addNewRule(listId) {
+            let newRuleText = prompt("أدخل النص الجديد:");
+            if (newRuleText !== null && newRuleText.trim() !== "") {
+                let listElement = document.getElementById(listId);
+                let li = document.createElement("li");
+                li.innerHTML = `<span>${newRuleText}</span> <span class="rule-buttons-group" style="display:inline-flex;"><button class="rule-btn edit" onclick="editRule(this)">تعديل</button><button class="rule-btn delete" onclick="deleteRule(this)">حذف</button></span>`;
+                listElement.appendChild(li);
+                let roleName = localStorage.getItem("user_role") === "owner" ? "أونر" : "أدمن";
+                logAction(`قام (${roleName}) بإضافة بند جديد`, roleName);
+                showFloatingAlert("تمت الإضافة بنجاح!");
+            }
+        }
+
+        function addNewSectionPrompt() {
+            let sectionName = prompt("أدخل عنوان القسم الجديد:");
+            if (sectionName !== null && sectionName.trim() !== "") {
+                let sections = JSON.parse(localStorage.getItem("custom_rules_sections") || "[]");
+                let sectionId = "custom_sec_" + Date.now();
+                sections.push({ id: sectionId, title: sectionName, rules: ["أضف أول بند هنا..."] });
+                localStorage.setItem("custom_rules_sections", JSON.stringify(sections));
+                
+                addNavLink(sectionId, sectionName);
+                loadDynamicSections();
+                applyPermissions();
+                logAction(`قام الأونر بإضافة قسم جديد: [${sectionName}]`, "أونر");
+                showFloatingAlert("تمت إضافة القسم بنجاح!");
+            }
+        }
+
+        function addNavLink(id, title) {
+            let nav = document.getElementById("top-nav");
+            let loginBtn = document.getElementById("nav-login-btn");
+            let a = document.createElement("a");
+            a.href = "#" + id;
+            a.innerText = title;
+            a.id = "nav-link-" + id;
+            nav.insertBefore(a, loginBtn);
+        }
+
+        function loadDynamicSections() {
+            let sections = JSON.parse(localStorage.getItem("custom_rules_sections") || "[]");
+            let container = document.getElementById("dynamic-sections-container");
+            let nav = document.getElementById("top-nav");
+            let loginBtn = document.getElementById("nav-login-btn");
+            
+            nav.querySelectorAll("a[id^='nav-link-']").forEach(el => el.remove());
+            
+            if (!container) return;
+            container.innerHTML = "";
+
+            let role = localStorage.getItem("user_role");
+
+            sections.forEach((sec, index) => {
+                let a = document.createElement("a");
+                a.href = "#" + sec.id;
+                a.innerText = sec.title;
+                a.id = "nav-link-" + sec.id;
+                nav.insertBefore(a, loginBtn);
+
+                let titleDiv = document.createElement("div");
+                titleDiv.className = "section-title";
+                titleDiv.id = sec.id;
+                if(role) {
+                    titleDiv.style.cursor = "pointer";
+                    titleDiv.title = "اضغط لتعديل اسم القسم";
+                    titleDiv.onclick = function() { editCustomSectionTitle(sec.id); };
+                }
+
+                let deleteBtnHtml = (role === 'owner') ? `<button class="admin-action-btn delete-section-btn" style="background:#ef4444; padding:4px 10px; font-size:0.8rem; margin-left:10px;" onclick="event.stopPropagation(); deleteCustomSection(${index})">🗑️ حذف القسم</button>` : '';
+                let addRuleBtnHtml = role ? `<button class="admin-action-btn dynamic-add-rule-btn" style="padding: 4px 10px; font-size: 0.8rem; margin:0;" onclick="event.stopPropagation(); addCustomRule('${sec.id}')">➕ إضافة بند</button>` : '';
+
+                titleDiv.innerHTML = `<span id="title-${sec.id}">${sec.title}</span> <div>${deleteBtnHtml} ${addRuleBtnHtml}</div>`;
+                
+                let cardDiv = document.createElement("div");
+                cardDiv.className = "card";
+                
+                let ol = document.createElement("ol");
+                ol.id = "list-" + sec.id;
+                
+                sec.rules.forEach((ruleText, rIndex) => {
+                    let li = document.createElement("li");
+                    let btnDisplay = role ? "inline-flex" : "none";
+                    li.innerHTML = `<span>${ruleText}</span> <span class="rule-buttons-group" style="display: ${btnDisplay};"><button class="rule-btn edit" onclick="editCustomRule('${sec.id}', ${rIndex})">تعديل</button><button class="rule-btn delete" onclick="deleteCustomRule('${sec.id}', ${rIndex})">حذف</button></span>`;
+                    ol.appendChild(li);
+                });
+
+                cardDiv.appendChild(ol);
+                container.appendChild(titleDiv);
+                container.appendChild(cardDiv);
+            });
+        }
+
+        function editCustomSectionTitle(secId) {
+            let sections = JSON.parse(localStorage.getItem("custom_rules_sections") || "[]");
+            let sec = sections.find(s => s.id === secId);
+            if (!sec) return;
+            let newTitle = prompt("أدخل اسم القسم الجديد:", sec.title);
+            if (newTitle !== null && newTitle.trim() !== "") {
+                sec.title = newTitle;
+                localStorage.setItem("custom_rules_sections", JSON.stringify(sections));
+                loadDynamicSections();
+                let roleName = localStorage.getItem("user_role") === "owner" ? "أونر" : "أدمن";
+                logAction(`قام (${roleName}) بتعديل اسم القسم إلى: [${newTitle}]`, roleName);
+                showFloatingAlert("تم تعديل اسم القسم بنجاح!");
+            }
+        }
+
+        function deleteCustomSection(index) {
+            if (confirm("هل أنت متأكد من حذف هذا القسم بالكامل؟")) {
+                let sections = JSON.parse(localStorage.getItem("custom_rules_sections") || "[]");
+                let removed = sections.splice(index, 1);
+                localStorage.setItem("custom_rules_sections", JSON.stringify(sections));
+                loadDynamicSections();
+                logAction(`قام الأونر بحذف قسم: [${removed[0].title}]`, "أونر");
+                showFloatingAlert("تم حذف القسم بنجاح!");
+            }
+        }
+
+        function addCustomRule(secId) {
+            let ruleText = prompt("أدخل النص الجديد:");
+            if (ruleText !== null && ruleText.trim() !== "") {
+                let sections = JSON.parse(localStorage.getItem("custom_rules_sections") || "[]");
+                let sec = sections.find(s => s.id === secId);
+                if (sec) {
+                    sec.rules.push(ruleText);
+                    localStorage.setItem("custom_rules_sections", JSON.stringify(sections));
+                    loadDynamicSections();
+                    let roleName = localStorage.getItem("user_role") === "owner" ? "أونر" : "أدمن";
+                    logAction(`قام (${roleName}) بإضافة بند في قسم [${sec.title}]`, roleName);
+                    showFloatingAlert("تمت الإضافة بنجاح!");
+                }
+            }
+        }
+
+        function editCustomRule(secId, rIndex) {
+            let sections = JSON.parse(localStorage.getItem("custom_rules_sections") || "[]");
+            let sec = sections.find(s => s.id === secId);
+            if (!sec) return;
+            let currentText = sec.rules[rIndex];
+            let updatedText = prompt("عدل النص:", currentText);
+            if (updatedText !== null && updatedText.trim() !== "") {
+                sec.rules[rIndex] = updatedText;
+                localStorage.setItem("custom_rules_sections", JSON.stringify(sections));
+                loadDynamicSections();
+                let roleName = localStorage.getItem("user_role") === "owner" ? "أونر" : "أدمن";
+                logAction(`قام (${roleName}) بتعديل بند في قسم [${sec.title}]`, roleName);
+                showFloatingAlert("تم التعديل بنجاح!");
+            }
+        }
+
+        function deleteCustomRule(secId, rIndex) {
+            if (confirm("هل أنت متأكد من حذف هذا البند؟")) {
+                let sections = JSON.parse(localStorage.getItem("custom_rules_sections") || "[]");
+                let sec = sections.find(s => s.id === secId);
+                if (sec) {
+                    sec.rules.splice(rIndex, 1);
+                    localStorage.setItem("custom_rules_sections", JSON.stringify(sections));
+                    loadDynamicSections();
+                    let roleName = localStorage.getItem("user_role") === "owner" ? "أونر" : "أدمن";
+                    logAction(`قام (${roleName}) بحذف بند من قسم [${sec.title}]`, roleName);
+                    showFloatingAlert("تم الحذف بنجاح!");
+                }
+            }
+        }
+
+        function addWarning() {
+            let player = document.getElementById("warn-player").value.trim();
+            let reason = document.getElementById("warn-reason").value.trim();
+            if (!player || !reason) { alert("أدخل اسم العضو والسبب!"); return; }
+            let warnings = JSON.parse(localStorage.getItem("server_warnings") || "[]");
+            warnings.push({ player, reason, date: new Date().toLocaleDateString() });
+            localStorage.setItem("server_warnings", JSON.stringify(warnings));
+            document.getElementById("warn-player").value = "";
+            document.getElementById("warn-reason").value = "";
+            loadWarnings();
+            logAction(`أصدر الأونر تحذيراً للعضو: [${player}]`, "أونر");
+            showFloatingAlert("تم إرسال التحذير!");
+        }
+
+        function loadWarnings() {
+            let warnings = JSON.parse(localStorage.getItem("server_warnings") || "[]");
+            let list = document.getElementById("warnings-list");
+            if (warnings.length === 0) { list.innerHTML = "<li>لا توجد تحذيرات.</li>"; return; }
+            list.innerHTML = "";
+            warnings.forEach((w) => {
+                let li = document.createElement("li");
+                li.innerHTML = `العضو: <strong style="color:#60a5fa">${w.player}</strong> | السبب: ${w.reason}`;
+                list.appendChild(li);
+            });
+        }
+
+        function addPartner() {
+            let name = document.getElementById("partner-name").value.trim();
+            let owner = document.getElementById("partner-owner").value.trim();
+            let link = document.getElementById("partner-link").value.trim();
+            if (!name || !owner || !link) { alert("الرجاء تعبئة حقول الشراكة!"); return; }
+            let partners = JSON.parse(localStorage.getItem("server_partners") || "[]");
+            partners.push({ name, owner, link });
+            localStorage.setItem("server_partners", JSON.stringify(partners));
+            document.getElementById("partner-name").value = "";
+            document.getElementById("partner-owner").value = "";
+            document.getElementById("partner-link").value = "";
+            loadPartners();
+            logAction(`أضاف الأونر شراكة مع: [${name}]`, "أونر");
+            showFloatingAlert("تمت إضافة الشريك!");
+        }
+
+        function loadPartners() {
+            let partners = JSON.parse(localStorage.getItem("server_partners") || "[]");
+            let tbody = document.getElementById("partners-table-body");
+            if (!tbody) return;
+            if (partners.length === 0) { tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--text-muted);">لا توجد شراكات.</td></tr>`; return; }
+            tbody.innerHTML = "";
+            partners.forEach((p, index) => {
+                let tr = document.createElement("tr");
+                tr.innerHTML = `<td><strong>${p.name}</strong></td><td>${p.owner}</td><td><a href="${p.link}" target="_blank" style="color: #60a5fa;">ديسكورد</a></td><td><button onclick="deletePartner(${index})" style="background: #ef4444; color: #fff; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer;">حذف</button></td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function deletePartner(index) {
+            let partners = JSON.parse(localStorage.getItem("server_partners") || "[]");
+            partners.splice(index, 1);
+            localStorage.setItem("server_partners", JSON.stringify(partners));
+            loadPartners();
+            logAction("حذف الأونر شراكة سيرفر", "أونر");
+            showFloatingAlert("تم الحذف!");
+        }
+
+        function logAction(actionDescription, roleType) {
+            let logs = JSON.parse(localStorage.getItem("admin_activity_logs") || "[]");
+            let now = new Date();
+            let timeStr = now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            logs.unshift({ text: actionDescription, role: roleType, time: timeStr });
+            if (logs.length > 50) logs.pop();
+            localStorage.setItem("admin_activity_logs", JSON.stringify(logs));
+            loadLogs();
+        }
+
+        function loadLogs() {
+            let logs = JSON.parse(localStorage.getItem("admin_activity_logs") || "[]");
+            let list = document.getElementById("logs-list");
+            if (!list) return;
+            if (logs.length === 0) {
+                list.innerHTML = "<li>لا توجد سجلات مسجلة.</li>";
+                return;
+            }
+            list.innerHTML = "";
+            logs.forEach(l => {
+                let li = document.createElement("li");
+                li.innerHTML = `<span style="color:#60a5fa">[${l.role}]</span> ${l.text} <span style="color:var(--text-muted); font-size:0.8rem;">(${l.time})</span>`;
+                list.appendChild(li);
+            });
+        }
+
+        function clearLogs() {
+            if (confirm("هل أنت متأكد من مسح جميع السجلات؟")) {
+                localStorage.removeItem("admin_activity_logs");
+                loadLogs();
+                logAction("قام الأونر بمسح سجلات النظام", "أونر");
+                showFloatingAlert("تم مسح السجلات بنجاح!");
+            }
+        }
+    </script>
+</body>
+</html>
